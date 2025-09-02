@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const yesLink = document.getElementById('yesLink');
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
     const message = document.getElementById('message');
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Create confetti
     function createConfetti() {
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < 50; i++) {
             setTimeout(() => {
                 const confetti = document.createElement('div');
                 confetti.classList.add('confetti');
@@ -62,9 +63,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Yes button handler
-    yesBtn.addEventListener('click', function() {
-        message.textContent = "Yay! I love you too! 💖 You've made me the happiest person!";
+    // Yes button handler - add delay before navigation
+    yesLink.addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent immediate navigation
+        const targetUrl = this.href;
+        
+        message.textContent = "Yay! I love you too! 💖";
         createConfetti();
         
         // Change GIF to happy reaction
@@ -73,10 +77,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add more hearts
         createHearts();
         
-        // Redirect to proposal page after a delay
+        // Navigate after delay
         setTimeout(() => {
-            window.location.href = "proposal.html"; // Change to your proposal page URL
-        }, 4000);
+            window.location.href = targetUrl;
+        }, 2000); // 2 second delay
     });
     
     // No button handler - move button on hover

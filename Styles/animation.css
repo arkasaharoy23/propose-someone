@@ -4,6 +4,11 @@
     100% { transform: scale(1); }
 }
 
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+
 @keyframes float {
     0% {
         transform: translateY(100%) rotate(0deg);
@@ -30,4 +35,22 @@
         transform: translateY(100vh) rotate(720deg);
         opacity: 0;
     }
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.celebration-heart {
+    position: fixed;
+    color: #ff3366;
+    z-index: 10;
+    animation: fall linear forwards;
 }
