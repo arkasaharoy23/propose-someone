@@ -3,10 +3,12 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
     min-height: 100vh;
+    min-height: -webkit-fill-available;
     background: linear-gradient(to bottom, #ffecf1, #ffcce0, #ffb6d9);
     display: flex;
     flex-direction: column;
@@ -14,13 +16,14 @@ body {
     align-items: center;
     padding: 20px;
     overflow-x: hidden;
+    position: relative;
 }
 
 .container {
     max-width: 800px;
     width: 100%;
     text-align: center;
-    padding: 30px;
+    padding: 20px;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
@@ -30,16 +33,16 @@ body {
 
 h1 {
     color: #ff66a3;
-    font-size: 3rem;
-    margin-bottom: 30px;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     animation: pulse 2s infinite;
 }
 
 .gif-container {
-    width: 300px;
-    height: 250px;
-    margin: 0 auto 30px;
+    width: 280px;
+    height: 220px;
+    margin: 0 auto 20px;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -55,27 +58,35 @@ h1 {
 .buttons {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin-top: 30px;
+    gap: 20px;
+    margin-top: 20px;
     flex-wrap: wrap;
+    position: relative;
+    min-height: 70px;
+}
+
+.button-link {
+    text-decoration: none;
+    z-index: 2;
 }
 
 button {
-    padding: 15px 40px;
-    font-size: 1.5rem;
+    padding: 14px 30px;
+    font-size: 1.3rem;
     border: none;
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: bold;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    touch-action: manipulation;
 }
 
 #yesBtn {
     background: linear-gradient(to right, #ff66a3, #ff3385);
     color: white;
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 #noBtn {
@@ -83,14 +94,15 @@ button {
     color: #666666;
     position: relative;
     transition: all 0.1s ease;
+    z-index: 1;
 }
 
-button:hover {
+button:hover, button:active {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
-#yesBtn:hover {
+#yesBtn:hover, #yesBtn:active {
     background: linear-gradient(to right, #ff3385, #ff0066);
     box-shadow: 0 10px 20px rgba(255, 105, 180, 0.4);
 }
@@ -107,57 +119,97 @@ button:hover {
 
 .heart {
     position: absolute;
-    font-size: 20px;
+    font-size: 18px;
     color: #ff66a3;
     opacity: 0;
     animation: float 6s ease-in infinite;
 }
 
 .message {
-    margin-top: 30px;
-    font-size: 1.2rem;
+    margin-top: 20px;
+    font-size: 1.1rem;
     color: #ff66a3;
-    min-height: 60px;
+    min-height: 50px;
     padding: 10px;
     font-weight: bold;
 }
 
 .confetti {
     position: fixed;
-    width: 15px;
-    height: 15px;
+    width: 12px;
+    height: 12px;
     background-color: #ff66a3;
     opacity: 0;
     pointer-events: none;
     animation: confettiFall 5s linear forwards;
 }
 
-/* Responsive design */
-@media (max-width: 600px) {
+/* Responsive design for tablets */
+@media (min-width: 600px) {
     h1 {
-        font-size: 2.2rem;
-    }
-    
-    button {
-        padding: 12px 30px;
-        font-size: 1.2rem;
+        font-size: 3rem;
+        margin-bottom: 30px;
     }
     
     .gif-container {
-        width: 250px;
+        width: 300px;
+        height: 250px;
+        margin-bottom: 30px;
+    }
+    
+    .buttons {
+        gap: 30px;
+        margin-top: 30px;
+        min-height: 80px;
+    }
+    
+    button {
+        padding: 15px 40px;
+        font-size: 1.5rem;
+    }
+    
+    .message {
+        margin-top: 30px;
+        font-size: 1.2rem;
+        min-height: 60px;
+    }
+}
+
+/* Responsive design for desktop */
+@media (min-width: 1024px) {
+    .container {
+        padding: 30px;
+    }
+    
+    h1 {
+        font-size: 3.5rem;
+    }
+    
+    .gif-container {
+        width: 320px;
+        height: 270px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .gif-container {
+        width: 240px;
         height: 200px;
+    }
+    
+    button {
+        padding: 12px 25px;
+        font-size: 1.1rem;
     }
     
     .buttons {
         flex-direction: column;
         align-items: center;
-    }
-    
-    #noBtn {
-        order: 2;
-    }
-    
-    #yesBtn {
-        order: 1;
+        min-height: 140px;
     }
 }

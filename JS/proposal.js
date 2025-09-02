@@ -25,21 +25,54 @@ document.addEventListener('DOMContentLoaded', function() {
     const noBtn = document.getElementById('noBtn');
     const responseMessage = document.getElementById('responseMessage');
     
+    // Check if device is touch-enabled
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    // Function to move the No button
+    function moveNoButton() {
+        // Get container dimensions
+        const buttonsContainer = document.querySelector('.buttons');
+        const containerRect = buttonsContainer.getBoundingClientRect();
+        const buttonRect = noBtn.getBoundingClientRect();
+        
+        // Calculate safe area (keep button fully visible)
+        const maxX = containerRect.width - buttonRect.width;
+        const maxY = containerRect.height - buttonRect.height;
+        
+        // Move the button to a random position within the container
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+        
+        noBtn.style.position = 'absolute';
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+    }
+    
     yesBtn.addEventListener('click', function() {
         responseMessage.textContent = "You've made me the happiest person in the world! I love you!";
         celebrate();
     });
     
-    noBtn.addEventListener('mouseover', function() {
-        // Move the "No" button randomly when hovered
-        const x = Math.random() * 200 - 100;
-        const y = Math.random() * 200 - 100;
-        noBtn.style.transform = `translate(${x}px, ${y}px)`;
-    });
-    
-    noBtn.addEventListener('click', function() {
-        responseMessage.textContent = "I'll keep trying until you say yes!";
-    });
+    // Add appropriate event listeners based on device type
+    if (isTouchDevice) {
+        // For touch devices - move on touchstart
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveNoButton();
+            responseMessage.textContent = "I'll keep trying until you say yes!";
+        });
+    } else {
+        // For non-touch devices - move on mouseover
+        noBtn.addEventListener('mouseover', function() {
+            moveNoButton();
+        });
+        
+        // Also move on click
+        noBtn.addEventListener('click', function() {
+            responseMessage.textContent = "I'll keep trying until you say yes!";
+            moveNoButton();
+        });
+    }
     
     function celebrate() {
         // Create falling hearts animation
@@ -67,4 +100,13 @@ document.addEventListener('DOMContentLoaded', function() {
             heart.remove();
         }, 5000);
     }
+    
+    // Prevent context menu on buttons
+    yesBtn.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+    
+    noBtn.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
 });

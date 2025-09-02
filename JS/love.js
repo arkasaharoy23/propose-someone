@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const noBtn = document.getElementById('noBtn');
     const message = document.getElementById('message');
     const heartsContainer = document.getElementById('hearts');
+    const buttonsContainer = document.querySelector('.buttons');
+    
+    // Check if device is touch-enabled
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     
     // Create floating hearts
     function createHearts() {
@@ -65,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Yes button handler - add delay before navigation
     yesLink.addEventListener('click', function(e) {
-        e.preventDefault(); // Prevent immediate navigation
+        e.preventDefault();
         const targetUrl = this.href;
         
         message.textContent = "Yay! I love you too! 💖";
@@ -80,32 +84,63 @@ document.addEventListener('DOMContentLoaded', function() {
         // Navigate after delay
         setTimeout(() => {
             window.location.href = targetUrl;
-        }, 2000); // 2 second delay
+        }, 2000);
     });
     
-    // No button handler - move button on hover
-    noBtn.addEventListener('mouseover', function() {
-        // Move the button to a random position
-        const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40);
-        const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40);
+    // Function to move the No button
+    function moveNoButton() {
+        // Get container dimensions
+        const containerRect = buttonsContainer.getBoundingClientRect();
+        const buttonRect = noBtn.getBoundingClientRect();
+        
+        // Calculate safe area (keep button fully visible)
+        const maxX = containerRect.width - buttonRect.width;
+        const maxY = containerRect.height - buttonRect.height;
+        
+        // Move the button to a random position within the container
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
         
         noBtn.style.position = 'absolute';
         noBtn.style.left = x + 'px';
         noBtn.style.top = y + 'px';
         
         message.textContent = "Hey! Where are you going? 😢";
+    }
+    
+    // Add appropriate event listeners based on device type
+    if (isTouchDevice) {
+        // For touch devices - move on touchstart
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveNoButton();
+        });
+        
+        // Also move on click for compatibility
+        noBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            message.textContent = "Please don't say no! 🥺 Try the other button!";
+            moveNoButton();
+        });
+    } else {
+        // For non-touch devices - move on mouseover
+        noBtn.addEventListener('mouseover', function() {
+            moveNoButton();
+        });
+        
+        // Also move on click
+        noBtn.addEventListener('click', function() {
+            message.textContent = "Please don't say no! 🥺 Try the other button!";
+            moveNoButton();
+        });
+    }
+    
+    // Prevent context menu on buttons
+    yesBtn.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
     });
     
-    // No button click handler
-    noBtn.addEventListener('click', function() {
-        message.textContent = "Please don't say no! 🥺 Try the other button!";
-        
-        // Move the button again
-        const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40);
-        const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40);
-        
-        noBtn.style.position = 'absolute';
-        noBtn.style.left = x + 'px';
-        noBtn.style.top = y + 'px';
+    noBtn.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
     });
 });
